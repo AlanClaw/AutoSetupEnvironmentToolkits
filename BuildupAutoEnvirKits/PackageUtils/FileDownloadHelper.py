@@ -30,8 +30,11 @@ def main():
     fld_path = os.path.join(os.environ['userprofile'], 'Desktop', 'test_dir')
     
     sft_spider = SoftwareSpider('software.ini', fld_path)
-#     sft_spider.downlaod_pkg('Notepad++')
     sft_spider.downlaod_pkg()
+#     sft_spider.downlaod_pkg('SystemExplorer_portable')
+#     sft_spider.downlaod_pkg('Notepad++')
+#     sft_spider.downlaod_pkg('Git-Windows 64-bit')
+#     sft_spider.downlaod_pkg('Git-Windows 32-bit')
     
 
 class MyHTMLParser(HTMLParser):
@@ -132,7 +135,11 @@ class SoftwareSpider(object):
                 matchs = [link for link in matchs if re_format.match(link) is not None]
                 _logger.debug("match: {0}".format(matchs))
                 sub_link = self._get_unique_link(matchs) if len(matchs) > 1 else matchs[0] 
+            elif len(sub_link) == 1: sub_link = matchs[0]
+            else: pass
             
+            _logger.debug(self.get_ini_reader.get(sft, "dwonload_link_host"))
+            _logger.debug(sub_link)
             download_link = self.get_ini_reader.get(sft, "dwonload_link_host") + sub_link
             
         return download_link
